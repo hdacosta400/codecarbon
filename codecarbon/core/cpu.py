@@ -44,6 +44,16 @@ def is_rapl_available():
             + f"IntelRAPL : {e}",
         )
         return False
+    
+def is_mx_available():
+    model = detect_cpu_model()
+    if model:
+        if "Apple M" in model:
+            return True 
+    return False
+
+def is_mobile_available():
+    pass
 
 
 class IntelPowerGadget:
@@ -259,6 +269,31 @@ class IntelRAPL:
     def start(self):
         for rapl_file in self._rapl_files:
             rapl_file.start()
+
+
+class Mx:
+    def __init__(self):
+        self.cpu_details = {} 
+
+    def get_cpu_details(self, **kwargs) -> Dict:
+        self.cpu_details["Processor Power"] = self.parse_power_cmd()
+        return self.cpu_details
+
+    def parse_power_cmd(self):
+        cmd = 'sudo ./powermetrics.sh'
+        out = subprocess.check_output(cmd, shell=True).decode()
+        for row in out.split('\n'):
+            print("ROW:", row)
+            if "CPU Power" in row:
+                watt_str = row.split(':')[1]
+                watts = int(watt_str.split(' ')[1]) / 1000
+                return watts
+        logger.info(f"Unable to find CPU Power usage information")
+        return 0
+
+    def start(self):
+        # TODO: Read energy
+        pass
 
 
 class TDP:

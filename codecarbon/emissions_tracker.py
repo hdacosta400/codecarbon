@@ -279,6 +279,14 @@ class BaseEmissionsTracker(ABC):
             hardware = CPU.from_utils(self._output_dir, "intel_rapl")
             self._hardware.append(hardware)
             self._conf["cpu_model"] = hardware.get_model()
+        
+        elif cpu.is_m1_available():
+            logger.info("Tracking Mx CPU")
+            hardware = CPU.from_utils(self._output_dir, "mx")
+            self._hardware.append(hardware)
+            self._conf["cpu_model"] = hardware.get_model()
+
+        # is mobile available
         else:
             logger.warning(
                 "No CPU tracking mode found. Falling back on CPU constant mode."
@@ -555,7 +563,7 @@ class BaseEmissionsTracker(ABC):
             power, energy = hardware.measure_power_and_energy(
                 last_duration=last_duration
             )
-            self._total_energy += energy
+            self._total_energy += energy ###
             if isinstance(hardware, CPU):
                 self._total_cpu_energy += energy
                 self._cpu_power = power
