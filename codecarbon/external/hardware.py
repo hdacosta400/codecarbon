@@ -11,7 +11,7 @@ from typing import Dict, Iterable, List, Optional, Tuple
 
 import psutil
 
-from codecarbon.core.cpu import IntelPowerGadget, IntelRAPL
+from codecarbon.core.cpu import IntelPowerGadget, IntelRAPL, Mx
 from codecarbon.core.gpu import get_gpu_details
 from codecarbon.core.units import Energy, Power, Time
 from codecarbon.core.util import detect_cpu_model
@@ -114,6 +114,14 @@ class CPU(BaseHardware):
         elif self._mode == "intel_rapl":
             self._intel_interface = IntelRAPL(rapl_dir=rapl_dir)
 
+        elif self._mode == "Mx":
+            self._intel_interface = Mx()
+                                
+        '''
+        elif self._mode == "mobile":
+            self.interface = Mobile
+        '''
+
     def __repr__(self) -> str:
         if self._mode != "constant":
             return f"CPU({' '.join(map(str.capitalize, self._mode.split('_')))})"
@@ -177,7 +185,7 @@ class CPU(BaseHardware):
         return super().measure_power_and_energy(last_duration=last_duration)
 
     def start(self):
-        if self._mode in ["intel_power_gadget", "intel_rapl"]:
+        if self._mode in ["intel_power_gadget", "intel_rapl", "Mx"]:
             self._intel_interface.start()
         pass
 

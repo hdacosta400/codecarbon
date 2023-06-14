@@ -57,7 +57,6 @@ class EmissionsData:
     ram_total_size: float
     tracking_mode: str
     on_cloud: str = "N"
-    pue: float = 1
 
     @property
     def values(self) -> OrderedDict:
