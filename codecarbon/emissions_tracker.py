@@ -280,7 +280,7 @@ class BaseEmissionsTracker(ABC):
             self._hardware.append(hardware)
             self._conf["cpu_model"] = hardware.get_model()
         
-        elif cpu.is_m1_available():
+        elif cpu.is_mx_available():
             logger.info("Tracking Mx CPU")
             hardware = CPU.from_utils(self._output_dir, "mx")
             self._hardware.append(hardware)
