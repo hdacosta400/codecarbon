@@ -114,7 +114,7 @@ class CPU(BaseHardware):
         elif self._mode == "intel_rapl":
             self._intel_interface = IntelRAPL(rapl_dir=rapl_dir)
 
-        elif self._mode == "Mx":
+        elif self._mode == "mx":
             self._intel_interface = Mx()
                                 
         '''

@@ -280,10 +280,10 @@ class Mx:
         return self.cpu_details
 
     def parse_power_cmd(self):
-        cmd = 'sudo ./powermetrics.sh'
+        cmd = 'sudo ./codecarbon/core/powermetrics.sh'
         out = subprocess.check_output(cmd, shell=True).decode()
         for row in out.split('\n'):
-            print("ROW:", row)
+            #print("ROW:", row)
             if "CPU Power" in row:
                 watt_str = row.split(':')[1]
                 watts = int(watt_str.split(' ')[1]) / 1000
